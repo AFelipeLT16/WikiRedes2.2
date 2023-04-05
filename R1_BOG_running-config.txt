@@ -1,0 +1,129 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+ipv6 dhcp pool slaacc
+ dns-server 2001:1200:C5:1:260:3EFF:FE2C:8D9D
+ domain-name afb_alt_mav.net
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017HWO6-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address 2003:1200:A5:3::1/64
+ ipv6 ospf 55 area 0
+!
+interface FastEthernet0/0.50
+ encapsulation dot1Q 50
+ no ip address
+ ipv6 traffic-filter lim_c in
+ ipv6 address 2001:1200:A5:1::/64 eui-64
+ ipv6 nd other-config-flag
+ ipv6 ospf 55 area 0
+ ipv6 dhcp server slaacc
+!
+interface FastEthernet0/0.100
+ encapsulation dot1Q 100
+ no ip address
+ ipv6 address 2001:1200:A5:2::/64 eui-64
+ ipv6 nd other-config-flag
+ ipv6 ospf 55 area 0
+ ipv6 dhcp server slaacc
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ ipv6 address 2001:1200:C5:1::/64 eui-64
+ ipv6 nd other-config-flag
+ ipv6 ospf 55 area 0
+ ipv6 dhcp server slaacc
+!
+interface FastEthernet0/1.1
+ no ip address
+!
+interface Serial0/3/0
+ no ip address
+ ipv6 address 2001:1200:C5:2::/64 eui-64
+ ipv6 ospf 55 area 0
+!
+interface Serial0/3/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ipv6 router ospf 55
+ router-id 1.1.1.1
+ log-adjacency-changes
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+ipv6 access-list lim
+ permit tcp 2001:1200:A5:1::/64 eq 443 any
+ipv6 access-list lim_b
+ deny tcp any 2001:1200:A5:1::/64 eq www
+ permit tcp any 2001:1200:A5:1::/64 eq 443
+ipv6 access-list lim_c
+ deny tcp any 2001:1200:C5:1::/64 eq www
+ permit ipv6 any any
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+

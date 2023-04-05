@@ -1,0 +1,114 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2811/K9 sn FTX10178REO-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Tunnel0
+ no ip address
+ mtu 1476
+!
+!
+interface FastEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ ip address 190.85.205.5 255.255.255.252
+!
+interface Serial0/1/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/3/0
+ no ip address
+ ipv6 address 2001:1200:C5:2::/64 eui-64
+ ipv6 ospf 55 area 0
+ clock rate 2000000
+!
+interface Serial0/3/1
+ ip address 190.85.205.1 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router eigrp 1
+ network 190.85.0.0
+!
+router ospf 2
+ log-adjacency-changes
+ redistribute eigrp 1 subnets 
+ network 190.85.205.4 0.0.0.3 area 0
+ network 190.85.205.12 0.0.0.3 area 0
+!
+ipv6 router ospf 55
+ router-id 2.2.2.2
+ log-adjacency-changes
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
